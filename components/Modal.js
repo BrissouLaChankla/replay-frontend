@@ -11,9 +11,6 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         const formData = new FormData(event.currentTarget)
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/store`, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-              },
             body: formData,
         })
 
