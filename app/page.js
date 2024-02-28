@@ -86,7 +86,7 @@ export default function Home() {
         {
           !!videos.length &&
           <video autoPlay loop muted className="absolute -z-10 w-full -top-1/2 " style={{ filter: "brightness(0.5)" }}>
-            <source src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${videos[0].src}`} type="video/mp4" />Your browser does not support the video tag.
+            <source src={videos[0].src} type="video/mp4" />Your browser does not support the video tag.
           </video>
         }
         <div className="flex flex-col h-full items-start justify-center gap-5 max-w-7xl m-auto ">
@@ -94,7 +94,7 @@ export default function Home() {
 
             <h1 className="text-white drop-shadow-[0_3px_1.2px_rgba(0,0,0,0.8)]">RePlay </h1><Anime />
           </div>
-          <p className="text-white max-w-sm drop-shadow-[0_3px_1.2px_rgba(0,0,0,0.8)]">Pour ne jamais oublier les moments où Skander nous a dit qu'il allait 1v9</p>
+          <p className="text-white max-w-sm drop-shadow-[0_3px_1.2px_rgba(0,0,0,0.8)]">Pour ne jamais oublier les moments où Skander nous a dit qu'il allait 1v9...</p>
           <button className="btn text-white drop-shadow-[0_3px_1.2px_rgba(0,0,0,0.8)]" onClick={() => document.getElementById('my_modal_2').showModal()}>Upload une vidéo</button>
         </div>
       </header>
