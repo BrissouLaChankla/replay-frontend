@@ -31,7 +31,6 @@ export default function Home() {
   }, [])
 
 
-
   useEffect(() => {
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/latest/${nbOfFetch}`)
@@ -39,17 +38,15 @@ export default function Home() {
       .then(data => {
         setVideos([...videos, ...data.videos]);
         setLoading(false);
-        console.log(data)
         if (data.lastFetch) {
           setHideLoadMore(true);
         }
-        console.log("Vidéos chargées");
       })
 
   }, [nbOfFetch])
 
   const finishToAddVideo = (videoJustAdded) => {
-    setVideos([videoJustAdded, ...videos]);
+    setVideos(videosPrec => [videoJustAdded, ...videosPrec]);
   }
 
   let showMore = ""
@@ -119,7 +116,7 @@ export default function Home() {
           <div className="col-span-12 md:col-span-4">
             <h2>Joueurs</h2>
 
-            <div className="flex flex-wrap gap-3 pt-3">
+            <div className="flex flex-wrap gap-3 pt-3" >
 
               {
                 !!players.length ?

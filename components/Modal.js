@@ -1,9 +1,25 @@
 "use client"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 
 export default function Modal({ players, tags, finishToAddVideo }) {
     const closebtn = useRef(null);
 
+    // Sert à gérer de façon local les tags et les players de la vidéo qui vient d'être upload vue que c'est des clées étrangères
+    const [tagsUploaded, setTagsUploaded] = useState([])
+    const [playersUploaded, setPlayersUploaded] = useState([])
+
+
+    const ToggleUploadedTP = (type, value) => {
+        if (type === "tags") {
+            setTagsUploaded(tagsUploaded.includes(value)
+                ? tagsUploaded.filter(e => e !== value)
+                : [...tagsUploaded, value]);
+        } else if (type === "players") {
+            setPlayersUploaded(playersUploaded.includes(value)
+                ? playersUploaded.filter(e => e !== value)
+                : [...playersUploaded, value]);
+        }
+    }
 
     async function onSubmit(event) {
         event.preventDefault()
@@ -14,11 +30,18 @@ export default function Modal({ players, tags, finishToAddVideo }) {
             body: formData,
         })
 
-        // Handle response if necessary
         const data = await response.json();
+        data.newVid.tags = tagsUploaded;
+        data.newVid.players = playersUploaded;
+
         finishToAddVideo(data.newVid);
+        // Clean inputs
+        event.target.reset();
+
+        // Close modal
         closebtn.current.click();
     }
+
 
     return (
         <dialog id="my_modal_2" className="modal">
@@ -39,7 +62,7 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                                 {
                                     players.map((player, i) =>
                                         <div key={i}>
-                                            <input type="checkbox" id={`select_${player.name}`} name={`player_${player._id}`} className="peer hidden" />
+                                            <input type="checkbox" onChange={() => ToggleUploadedTP("players", { _id: player._id, name: player.name })} id={`select_${player.name}`} name={`player_${player._id}`} className="peer hidden" />
                                             <label htmlFor={`select_${player.name}`} className="select-none cursor-pointer btn btn-outline btn-sm peer-checked:bg-white peer-checked:text-black">{player.name}</label>
                                         </div>
                                     )}
@@ -51,7 +74,7 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                                 {
                                     tags.map((tag, i) =>
                                         <div key={i}>
-                                            <input type="checkbox" id={`select_${tag.name}`} name={`tag_${tag._id}`} className="peer hidden" />
+                                            <input type="checkbox" onChange={() => ToggleUploadedTP("tags", { _id: tag._id, name: tag.name })} id={`select_${tag.name}`} name={`tag_${tag._id}`} className="peer hidden" />
                                             <label htmlFor={`select_${tag.name}`} className="select-none cursor-pointer btn btn-outline btn-sm peer-checked:bg-white peer-checked:text-black">{tag.name}</label>
                                         </div>
                                     )}

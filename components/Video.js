@@ -2,7 +2,7 @@ import tempsEcoule from '@/utils/Date';
 
 export default function Video(props) {
   return (
-    <div className="rounded-lg overflow-hidden col-span-12 md:col-span-6 lg:col-span-4 relative " >
+    <div key={props._id} className="rounded-lg overflow-hidden col-span-12 md:col-span-6 lg:col-span-4 relative " >
       <video controls className='h-64 w-full' >
         <source src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${props.src}`} type="video/mp4" />
         Your browser does not support the video tag.
