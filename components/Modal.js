@@ -5,8 +5,9 @@ export default function Modal({ players, tags, finishToAddVideo }) {
     const closebtn = useRef(null);
 
     // Sert à gérer de façon local les tags et les players de la vidéo qui vient d'être upload vue que c'est des clées étrangères
-    const [tagsUploaded, setTagsUploaded] = useState([])
-    const [playersUploaded, setPlayersUploaded] = useState([])
+    const [tagsUploaded, setTagsUploaded] = useState([]);
+    const [playersUploaded, setPlayersUploaded] = useState([]);
+    const [loading, setLoading] = useState(false);
 
 
     const ToggleUploadedTP = (type, value) => {
@@ -22,6 +23,7 @@ export default function Modal({ players, tags, finishToAddVideo }) {
     }
 
     async function onSubmit(event) {
+        setLoading(true);
         event.preventDefault()
 
         const formData = new FormData(event.currentTarget)
@@ -37,6 +39,8 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         finishToAddVideo(data.newVid);
         // Clean inputs
         event.target.reset();
+
+        setLoading(false)
 
         // Close modal
         closebtn.current.click();
@@ -81,7 +85,9 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                             </div>
                         </div>
 
-                        <input type="submit" value="Envoyer" className="bg-primary rounded cursor-pointer text-white w-1/6" />
+                        <button type="submit" disabled={loading ? true : false} className={`${loading ? "btn-disabled" : ""} bg-primary rounded cursor-pointer text-white w-1/6`}>
+                            {loading ? <span className="loading loading-ring loading-sm"></span> : "Envoyer"}
+                        </button>
                     </div>
                 </form>
             </div>
