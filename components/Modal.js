@@ -26,13 +26,37 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         setLoading(true);
         event.preventDefault()
 
-        const formData = new FormData(event.currentTarget)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/store`, {
+        const formData = new FormData()
+        // Accéder à l'input type file utilisant son nom
+        const inputFile = event.currentTarget.elements['uploaded_file'];
+
+        // Obtenir le fichier
+        const file = inputFile.files[0];
+        const fetchurl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/upload`;
+        formData.append('upload_preset', "hzd5j2fc");
+        formData.append('file', file);
+
+        const uploadCloudinary = await fetch(fetchurl, {
             method: 'POST',
             body: formData,
         })
 
+        const cloudinaryData = await uploadCloudinary.json();
+
+        const imgUrl = cloudinaryData.secure_url;
+        console.log("Upload sur cloudinary fait, lien  : " +imgUrl)
+
+        const fd = new FormData(event.target)
+        fd.append('imgUrl', imgUrl);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/store`, {
+            method: 'POST',
+            body: fd,
+        })
+
         const data = await response.json();
+        
+      
         data.newVid.tags = tagsUploaded;
         data.newVid.players = playersUploaded;
 

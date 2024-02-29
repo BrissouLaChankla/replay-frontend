@@ -27,7 +27,6 @@ export default function Home() {
         setTags(data.tags);
         setPlayers(data.players);
       });
-
   }, [])
 
 
