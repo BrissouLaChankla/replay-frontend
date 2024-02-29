@@ -46,6 +46,10 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         const imgUrl = cloudinaryData.secure_url;
         console.log("Upload sur cloudinary fait, lien  : " +imgUrl)
 
+// Empty input type file before creating form data to backend (so the limit of vercel of 4.5mb is not exceeded)
+        event.target.elements['uploaded_file'].value ="";
+
+
         const fd = new FormData(event.target)
         fd.append('imgUrl', imgUrl);
 
