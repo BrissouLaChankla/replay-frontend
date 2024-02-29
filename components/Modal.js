@@ -44,10 +44,10 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         const cloudinaryData = await uploadCloudinary.json();
 
         const imgUrl = cloudinaryData.secure_url;
-        console.log("Upload sur cloudinary fait, lien  : " +imgUrl)
+        console.log("Upload sur cloudinary fait, lien  : " + imgUrl)
 
-// Empty input type file before creating form data to backend (so the limit of vercel of 4.5mb is not exceeded)
-        event.target.elements['uploaded_file'].value ="";
+        // Empty input type file before creating form data to backend (so the limit of vercel of 4.5mb is not exceeded)
+        event.target.elements['uploaded_file'].value = "";
 
 
         const fd = new FormData(event.target)
@@ -59,8 +59,8 @@ export default function Modal({ players, tags, finishToAddVideo }) {
         })
 
         const data = await response.json();
-        
-      
+
+
         data.newVid.tags = tagsUploaded;
         data.newVid.players = playersUploaded;
 
@@ -87,8 +87,8 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                 <form encType="multipart/form-data" method="post" onSubmit={onSubmit}>
                     <input type="text" name="title" required placeholder="Petit titre en fast ?" className="input input-bordered w-full max-w-sm mt-6" />
                     <input type="file" accept="video/*" required className="file-input file-input-bordered file-input-primary w-full mt-3 h-32" name="uploaded_file" />
-                    <div className="flex gap-6 mt-4">
-                        <div className="w-3/6">
+                    <div className="flex flex-col md:flex-row gap-6 mt-4">
+                        <div className="md:w-3/6">
                             <h3 className="text-xl">Joueurs</h3>
                             <div className="flex flex-wrap gap-2 pt-3">
                                 {
@@ -100,7 +100,7 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                                     )}
                             </div>
                         </div>
-                        <div className="w-2/6">
+                        <div className="md:w-2/6">
                             <h3 className="text-xl">Tags</h3>
                             <div className="flex flex-wrap gap-2 pt-3">
                                 {
@@ -113,7 +113,7 @@ export default function Modal({ players, tags, finishToAddVideo }) {
                             </div>
                         </div>
 
-                        <button type="submit" disabled={loading ? true : false} className={`${loading ? "btn-disabled" : ""} bg-primary rounded cursor-pointer text-white w-1/6`}>
+                        <button type="submit" disabled={loading ? true : false} className={`${loading ? "btn-disabled" : ""} bg-primary min-h-14 rounded cursor-pointer text-white md:w-1/6`}>
                             {loading ? <span className="loading loading-ring loading-sm"></span> : "Envoyer"}
                         </button>
                     </div>

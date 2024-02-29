@@ -81,14 +81,14 @@ export default function Home() {
 
   return (
     <div>
-      <header className="relative h-[50vh] pb-12 overflow-hidden">
+      <header className="relative min-h-72 h-[38vh]  md:h-[50vh] md:pb-12 overflow-hidden">
         {
           !!videos.length &&
-          <video autoPlay loop muted className="absolute -z-10 w-full -top-1/2 " style={{ filter: "brightness(0.5)" }}>
+          <video autoPlay loop muted className="absolute min-w-full min-h-full -z-10 md:w-full md:-top-1/2 " style={{ filter: "brightness(0.5)" }}>
             <source src={videos[0].src} type="video/mp4" />Your browser does not support the video tag.
           </video>
         }
-        <div className="flex flex-col h-full items-start justify-center gap-5 max-w-7xl m-auto ">
+        <div className="flex flex-col h-full items-start justify-center gap-5 max-w-7xl m-auto px-3">
           <div className="flex items-center gap-3">
 
             <h1 className="text-white drop-shadow-[0_3px_1.2px_rgba(0,0,0,0.8)]">RePlay </h1><Anime />
@@ -111,8 +111,8 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl m-auto pt-16 pb-5">
-        <div className="grid grid-cols-12">
-          <div className="col-span-12 md:col-span-4">
+        <div className="grid grid-cols-12 gap-6 px-3">
+          <div className="col-span-12 md:col-span-4 ">
             <h2>Joueurs</h2>
 
             <div className="flex flex-wrap gap-3 pt-3" >
@@ -157,7 +157,7 @@ export default function Home() {
 
           </div>
         </div>
-        <div className="grid grid-cols-12 gap-8 mt-8">
+        <div className="grid grid-cols-12 gap-8 mt-8 px-3">
           {
             !!videos.length ?
               videosComp
