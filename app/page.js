@@ -17,7 +17,8 @@ export default function Home() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hideLoadMore, setHideLoadMore] = useState(false);
-  const [filters, setFilters] = useState({ players: [], tags: [] });
+  const [playersFilter, setPlayersFilter] = useState([]);
+  const [tagsFilter, setTagsFilter] = useState([]);
 
 
   useEffect(() => {
@@ -31,18 +32,27 @@ export default function Home() {
 
 
   useEffect(() => {
-
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/latest/${nbOfFetch}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/latest/${nbOfFetch}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          players:playersFilter,
+          tags:tagsFilter
+        })
+      })
       .then(response => response.json())
       .then(data => {
-        setVideos([...videos, ...data.videos]);
+        setVideos([...data.videos]);
         setLoading(false);
         if (data.lastFetch) {
           setHideLoadMore(true);
         }
       })
 
-  }, [nbOfFetch])
+  }, [nbOfFetch, tagsFilter, playersFilter])
 
   const finishToAddVideo = (videoJustAdded) => {
     setVideos(videosPrec => [videoJustAdded, ...videosPrec]);
@@ -64,12 +74,21 @@ export default function Home() {
   }
 
 
-
-
-
-  const handleFilter = (e) => {
-
+  // Add Tags/players filter
+  const handleFilter = (id, type) => {
+    if (type === "tags") {
+      setTagsFilter(tagsFilter.includes(id)
+        ? tagsFilter.filter(e => e !== id)
+        : [...tagsFilter, id]);
+    } else if (type === "players") {
+      setPlayersFilter(playersFilter.includes(id)
+        ? playersFilter.filter(e => e !== id)
+        : [...playersFilter, id]);
+    }
   }
+
+  console.log("players", playersFilter)
+  console.log("tags", tagsFilter)
 
   const loadMore = () => {
     setLoading(true);
@@ -121,7 +140,7 @@ export default function Home() {
                 !!players.length ?
                   players.map((player, i) =>
                     <div key={i}>
-                      <input type="checkbox" id={player.name} className="peer hidden" />
+                      <input type="checkbox" id={player.name} className="peer hidden" onChange={() => handleFilter(player._id, "players")} />
                       <label htmlFor={player.name} className="select-none cursor-pointer btn btn-outline btn-sm peer-checked:bg-white peer-checked:text-black">{player.name}</label>
                     </div>
                   )
@@ -140,7 +159,7 @@ export default function Home() {
                 !!tags.length ?
                   tags.map((tag, i) =>
                     <div key={i}>
-                      <input type="checkbox" id={tag.name} className="peer hidden" />
+                      <input type="checkbox" id={tag.name} className="peer hidden" onChange={() => handleFilter(tag._id, "tags")} />
                       <label htmlFor={tag.name} className="select-none cursor-pointer btn btn-outline btn-sm peer-checked:bg-white peer-checked:text-black">{tag.name}</label>
                     </div>
                   ) :
